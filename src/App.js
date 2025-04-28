@@ -5,6 +5,10 @@ import Blogs from './components/Blog/Blojs';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import './App.css';
+import About from './components/About/About';
+import Contact from './components/Contact/Contact';
+import Footer from './components/Footer/Footer';
+import AllBlogs from './components/Blog/All-Blogs';
 
 function App() {
   return (
@@ -13,13 +17,16 @@ function App() {
         <Header />
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Blogs />} />
+            <Route path="/" element={<AllBlogs />} />
+            <Route path="/myblogs" element={<Blogs />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            {/* Add more routes as needed */}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
-      </div>gi
+        <Footer />
+      </div>
     </Router>
   );
 }

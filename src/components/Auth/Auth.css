@@ -1,4 +1,4 @@
-Auth.css
+/* Auth.css */
 .auth-page {
   width: 100%;
   display: flex;
@@ -49,6 +49,20 @@ Auth.css
 
 .submit-btn:hover {
   background-color: #0069d9;
+}
+
+.submit-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .auth-redirect {

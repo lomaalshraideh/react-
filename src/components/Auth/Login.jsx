@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
 
@@ -8,6 +8,45 @@ const Login = () => {
     email: '',
     password: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loginUser = async (credentials) => {
+      try {
+        const response = await fetch('http://127.0.0.1:8080/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(credentials),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Login failed');
+        }
+        
+        const data = await response.json();
+        // Store token in localStorage
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          navigate('/');
+        }
+        
+        return data;
+      } catch (error) {
+        setError('Login failed. Please check your credentials.');
+        console.error('Login error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // This effect will run when form is submitted
+    if (loading) {
+      loginUser(formData);
+    }
+  }, [formData, loading, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,16 +58,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically handle the login logic
-    console.log('Login attempt with:', formData);
-    // For demonstration purposes, let's redirect to home page after login
-    navigate('/');
+    setLoading(true);
   };
 
   return (
     <div className="auth-page">
       <div className="auth-form-container">
         <h2>Login</h2>
+        {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -52,7 +89,13 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="submit-btn">Login</button>
+          <button 
+            type="submit" 
+            className="submit-btn" 
+            disabled={loading}
+          >
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
         </form>
         <p className="auth-redirect">
           Don't have an account? <Link to="/register">Register here</Link>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Blogs.css';
 
-function Blogs() {
+function AllBlogs() {
   // State to store blog posts
   const [blogPosts, setBlogPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,11 +24,11 @@ function Blogs() {
       setIsLoading(true);
       try {
         // Using the endpoint from your Laravel controller
-        const response = await fetch('http://127.0.0.1:8080/api/my-blogs', {
+        const response = await fetch('http://127.0.0.1:8080/api/blogs', {
           headers: {
             'Accept': 'application/json',
             // Include authorization if using token-based auth
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            // 'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
         
@@ -244,4 +244,4 @@ function Blogs() {
   );
 }
 
-export default Blogs;
+export default AllBlogs;
